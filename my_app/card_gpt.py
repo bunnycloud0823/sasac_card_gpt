@@ -126,7 +126,7 @@ if st.session_state["messages"][-1]["role"] != "assistant": # messages 리스트
             st.session_state["messages"].append({"role": "assistant", "content": ai_response})
         
         except Exception as e: 
-            error = f"""\
+            error_ = f"""\
 에러가 발생했습니다. 메시지를 다시 입력해주세요.
 
 발생 에러: {e}
