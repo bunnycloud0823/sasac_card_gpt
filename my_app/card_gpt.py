@@ -14,7 +14,7 @@ load_dotenv()
 # 세션에 저장하지 않으면 다 초기화 됨(따라서 memory 객체를 session_state에 저장해야 함)
 if "pre_memory" not in st.session_state:
     st.session_state["pre_memory"] = ConversationBufferMemory(
-        memory_key=="chat_history",
+        memory_key="chat_history",
         return_messages=True
     )
     
