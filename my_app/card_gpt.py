@@ -98,35 +98,38 @@ def conversation_with_memory(question):
 
 # =============================== 메인화면 설정 ===============================
 
-st.title("GPT로 빙글빙글🥰")
+# ==================== 메인 화면 설정 ======================
+st.title("My GPT로 빙글빙글🥰")
 
-# 1.대화 기록 출력
-# 반복문으로 message에 있는 모든 대화 기록에 접근
+# 1. 대화 기록 출력
+# 반복문으로 messages에 있는 모든 대화 기록에 접근 
 for message in st.session_state["messages"]:
     # chat_message: 메시지의 발신자 role(assistant인지 user인지)에 따라 UI를 구분하여 메시지 창을 표시해주는 함수 
-    with st.chat_message(message["role"]):  # 역할지정
-        st.write(message["context"])        # 해당 역할의 메시지 출력
-    
-# 2. 사용자 질의 작성 
-qestion = st.chat_input("메시지를 입력하세요.")
+    with st.chat_message(message["role"]):  # 역할 지정
+        st.write(message["content"])        # 해당 역할의 메시지 출력
 
-# 3.사용자 질의 저장 & 추출
-if qestion:
+# 2. 사용자 질의 작성
+question =st.chat_input("사용자 입력")
+
+# 3. 사용자 질의 저장 & 출력
+if question:
     # 사용자의 텍스트를 세션의 message에 추가
-    st.session_state["messages"].append({"role": "user", "content": qestion })
-    with st.chat_message("user"):   # 역할지정
-        st.write(qestion)           # 해당 역할의 메시지 출력
-        
+    st.session_state["messages"].append({"role": "user","content": question})
+    with st.chat_message("user"):
+        st.write(question)
+
 # 4. ai 답변 생성 & 출력
-if st.session_state["messages"][-1]["role"] != "assistant": # message리스트에 담긴 메시지가 ai가 아닌 경우
+if st.session_state["messages"][-1]["role"] != "assistant":     # messages 리스트에 담긴 메시지가 ai가 아닌 경우, ai면 안됨
     with st.chat_message("assistant"):
         try:
-            ai_response = conversation_with_memory(qestion)
+            ai_response = conversation_with_memory(question)
             st.session_state["messages"].append({"role": "assistant", "content": ai_response})
+        
         except Exception as e:
             error_ = f"""\
-에러가 발생했습니다. 메시지를 다시 입력해주세요.
+에러가 발생했습니다. 메시지를 다시 입력해주세요.Exception
 발생 에러: {e}
 """
+
             st.error(error_) #error_ 함수 이름과 비슷하면 헷갈리기에 _를 붙인다 
             
